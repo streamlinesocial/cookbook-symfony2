@@ -33,9 +33,9 @@ end
 end
 
 # setup db connection and other app settings
-template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parameters.ini" do
+template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parameters.yml" do
     action :create
-    source "parameters.ini.erb"
+    source "parameters.yml.erb"
     # owner node['symfony']['deploy_user']
     # group node['symfony']['deploy_group']
     mode "644"
@@ -68,7 +68,7 @@ end
 
 # setup configs for before migrate
 symlink_before_migrate = {
-    "config/parameters.ini" => "public/app/config/parameters.ini"
+    "config/parameters.yml" => "public/app/config/parameters.yml"
 }
 
 symlink_before_migrate.each do |target,symlink|
@@ -110,17 +110,17 @@ end
 
 # migration_command
 # runs after symlinks are created
-# execute "script/migration.sh" do
-#     environment environmentVars
-#     cwd release_path
-#     # user deployUser
-#     # group deployGroup
-# end
-# 
-# # runs after migration
-# execute "script/before_restart.sh" do
-#     environment environmentVars
-#     cwd release_path
-#     # user deployUser
-#     # group deployGroup
-# end
+execute "script/migration.sh" do
+    environment environmentVars
+    cwd release_path
+    # user deployUser
+    # group deployGroup
+end
+
+# runs after migration
+execute "script/before_restart.sh" do
+    environment environmentVars
+    cwd release_path
+    # user deployUser
+    # group deployGroup
+end
