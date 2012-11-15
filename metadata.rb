@@ -11,6 +11,6 @@ recipe            "symfony2::deploy_symfony", "Installs the Symfony2 app"
   supports os
 end
 
-%w{ iptables, mysql, apache2, database }.each do |cb|
+%w{ iptables, mysql, php }.each do |cb|
   depends cb
 end
