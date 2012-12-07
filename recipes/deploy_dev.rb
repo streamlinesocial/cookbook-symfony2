@@ -59,7 +59,7 @@ end
 
 # before_migrate
 # setup vendors and ensure install
-execute "script/before_migrate.sh" do
+execute "script/deploy/before_migrate.sh" do
     cwd release_path
     environment environmentVars
     # user deployUser
@@ -110,7 +110,7 @@ end
 
 # migration_command
 # runs after symlinks are created
-execute "script/migration.sh" do
+execute "script/deploy/migration.sh" do
     environment environmentVars
     cwd release_path
     # user deployUser
@@ -118,7 +118,7 @@ execute "script/migration.sh" do
 end
 
 # runs after migration
-execute "script/before_restart.sh" do
+execute "script/deploy/before_restart.sh" do
     environment environmentVars
     cwd release_path
     # user deployUser

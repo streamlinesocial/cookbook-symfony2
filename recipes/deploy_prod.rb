@@ -60,7 +60,7 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
 
     # setup vendors and ensure install
     before_migrate do
-        execute "script/before_migrate.sh" do
+        execute "script/deploy/before_migrate.sh" do
             cwd release_path
             environment environmentVars
             user deployUser
@@ -77,11 +77,11 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # runs after symlinks are created
     migrate true
     environment environmentVars
-    migration_command "script/migration.sh"
+    migration_command "script/deploy/migration.sh"
 
     # runs after migration
     before_restart do
-        execute "script/before_restart.sh" do
+        execute "script/deploy/before_restart.sh" do
             cwd release_path
             environment environmentVars
             user deployUser
