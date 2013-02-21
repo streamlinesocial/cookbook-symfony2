@@ -1,3 +1,6 @@
+# centos 6 with epel-release repo tested
+default["symfony"]["packages"] = [ 'wget', 'libjpeg', 'libpng', 'giflib', "php", "php-devel", "php-cli", "php-pear", "php-xml", "php-xmlrpc", "php-mbstring", "php-mysql", "php-pdo", "php-pecl-apc", "php-gd" ]
+
 default['symfony']['server_name'] = 'symfony-app.dev'
 default['symfony']['server_aliases'] = ['www.symfony-app.dev']
 

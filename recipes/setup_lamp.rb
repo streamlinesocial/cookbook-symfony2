@@ -1,5 +1,5 @@
 # ensure xml libs available (using ius repo to get newer version of php 5.3.xx than centos default)
-%w{ wget libjpeg libpng giflib php53u-xml php53u-xmlrpc php53u-mbstring php53u-mysql php53u-pdo php53u-pecl-apc php53u-gd }.each do |pkg|
+node['symfony']['packages'].each do |pkg|
   package pkg do
     action :install
   end
