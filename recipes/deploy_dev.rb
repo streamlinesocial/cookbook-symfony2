@@ -1,4 +1,4 @@
-release_path = "/var/www/vhosts/#{node['symfony']['server_name']}"
+release_path = "/var/www/vhosts/#{node['symfony']['server_name']}/current"
 
 deployUser = node["symfony"]["deploy_user"]
 deployGroup = node["symfony"]["deploy_group"]
