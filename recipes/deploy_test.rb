@@ -1,3 +1,4 @@
+shared_path = "/var/www/vhosts/#{node['symfony']['server_name']}/shared"
 release_path = "/var/www/vhosts/#{node['symfony']['server_name']}/current"
 
 deployUser = node["symfony"]["deploy_user"]
@@ -21,18 +22,18 @@ directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # group node['symfony']['deploy_group']
 end
 
-git release_path do
-    action :checkout # can be sync also for auto-updates
-    repository deployRepo
-    revision deployBranch
-    # user deployUser
-    # group deployGroup
-    depth 5 # mimic deploy_resource shallow_clone true
-    ssh_wrapper "/tmp/private_key/wrap-ssh4git.sh"
+#create shared config dirs
+%w{ shared shared/config shared/uploads shared/media shared/vendor }.each do |createDir|
+    directory "/var/www/vhosts/#{node['symfony']['server_name']}/#{createDir}" do
+        action :create
+        # owner node['symfony']['deploy_user']
+        # group node['symfony']['deploy_group']
+        recursive true
+    end
 end
 
 # setup db connection and other app settings
-template "/var/www/vhosts/#{node['symfony']['server_name']}/public/app/config/parameters.yml" do
+template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parameters.yml" do
     action :create
     source "parameters.yml.erb"
     # owner node['symfony']['deploy_user']
@@ -46,6 +47,16 @@ template "/var/www/vhosts/#{node['symfony']['server_name']}/public/app/config/pa
     )
 end
 
+git release_path do
+    action :checkout # can be sync also for auto-updates
+    repository deployRepo
+    revision deployBranch
+    # user deployUser
+    # group deployGroup
+    depth 5 # mimic deploy_resource shallow_clone true
+    ssh_wrapper "/tmp/private_key/wrap-ssh4git.sh"
+end
+
 # before_migrate
 # setup vendors and ensure install
 execute "script/deploy/before_migrate.sh" do
@@ -54,6 +65,48 @@ execute "script/deploy/before_migrate.sh" do
     # user deployUser
     # group deployGroup
 end
+
+# setup configs for before migrate
+symlink_before_migrate = {
+    "config/parameters.yml" => "public/app/config/parameters.yml"
+}
+
+symlink_before_migrate.each do |target,symlink|
+    link "#{release_path}/#{symlink}" do
+        to "#{shared_path}/#{target}"
+    end
+end
+
+# ================================================
+# # runs after before_migrate
+# # purge_before_symlink
+# %w{ public/web/uploads  public/web/media }.each do |target|
+#     execute "rm -rf #{target}" do
+#         cwd release_path
+#     end
+# end
+# 
+# # create_dirs_before_symlink
+# %w{}.each do |target|
+#     directory "#{release_path}/#{target}" do
+#         action :create
+#         # owner deployUser
+#         # group deployGroup
+#     end
+# end
+# 
+# # symlinks
+# symlinks = {"uploads" => "public/web/uploads",
+#             "media"   => "public/web/media"}
+# 
+# symlinks.each do |sharedTarget,releaseLink|
+#     link "#{release_path}/#{releaseLink}" do
+#         to "#{shared_path}/#{sharedTarget}"
+#         # owner deployUser
+#         # group deployGroup
+#     end
+# end
+# ================================================
 
 # migration_command
 # runs after symlinks are created
