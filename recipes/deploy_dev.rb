@@ -1,4 +1,4 @@
-release_path = "/var/www/vhosts/#{node['symfony']['server_name']}/current"
+release_path = "/var/www/vhosts/#{node['symfony']['server_name']}"
 
 deployUser = node["symfony"]["deploy_user"]
 deployGroup = node["symfony"]["deploy_group"]
@@ -13,8 +13,7 @@ environmentVars = ({ 'MYSQL_DB'     => node["symfony"]["mysql_name"],
                      'APACHE_GROUP' => node["apache"]["group"] })
 
 # ensure our deployment dir exists
-directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
-    action :create
+directory "/var/www/vhosts" do
     mode "0775"
     recursive true
     # owner node['symfony']['deploy_user']
@@ -32,7 +31,7 @@ git release_path do
 end
 
 # setup db connection and other app settings
-template "/var/www/vhosts/#{node['symfony']['server_name']}/public/app/config/parameters.yml" do
+template "#{release_path}/public/app/config/parameters.yml" do
     action :create
     source "parameters.yml.erb"
     # owner node['symfony']['deploy_user']
