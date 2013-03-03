@@ -3,6 +3,7 @@ default["symfony"]["packages"] = [ 'wget', 'libjpeg', 'libpng', 'giflib', "php",
 
 default['symfony']['server_name'] = 'symfony-app.dev'
 default['symfony']['server_aliases'] = ['www.symfony-app.dev']
+default['symfony']['server_docroot'] = "/var/www/vhosts/#{default['symfony']['server_name']}/current/public/web"
 
 default['symfony']['mysql_user'] = 'root'
 default['symfony']['mysql_pass'] = ''

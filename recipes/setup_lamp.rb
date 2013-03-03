@@ -1,4 +1,3 @@
-# ensure xml libs available (using ius repo to get newer version of php 5.3.xx than centos default)
 node['symfony']['packages'].each do |pkg|
   package pkg do
     action :install
@@ -19,7 +18,7 @@ end
 web_app node['symfony']['server_name'] do
     template 'web_app.conf.erb'
     cookbook 'symfony2' #@cookbook_name
-    docroot "/var/www/vhosts/#{node['symfony']['server_name']}/current/public/web"
+    docroot node['symfony']['server_docroot']
     server_name node['symfony']['server_name']
     server_aliases node['symfony']['server_aliases']
     enable true
