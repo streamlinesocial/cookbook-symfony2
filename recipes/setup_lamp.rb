@@ -1,3 +1,5 @@
+include_recipe "database::mysql"
+
 node['symfony']['packages'].each do |pkg|
   package pkg do
     action :install
@@ -12,6 +14,20 @@ end
 # ensure the default site is not enabled
 apache_site "default" do
     enable false
+end
+
+# setup database create auth
+mysql_connection_info = {
+    :host => "localhost",
+    :username => 'root',
+    :password => node['mysql']['server_root_password']
+}
+
+# create database for the environment
+database node['symfony']['mysql_name'] do
+    provider Chef::Provider::Database::Mysql
+    connection mysql_connection_info
+    action :create
 end
 
 # create virtual host entry for apache
