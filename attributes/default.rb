@@ -15,3 +15,4 @@ default["symfony"]["revision"] = 'master'
 
 default["symfony"]["deploy_user"] = 'apache'
 default["symfony"]["deploy_group"] = 'apache'
+default["symfony"]["deploy_key_bag_item"] = 'symfony-app'

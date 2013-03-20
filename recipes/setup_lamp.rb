@@ -30,6 +30,19 @@ database node['symfony']['mysql_name'] do
     action :create
 end
 
+# only create the database user if it's not the root user
+unless node['symfony']['mysql_user'] == 'root'
+    %w{ localhost 127.0.0.1 }.each do |mysql_remote_host|
+        mysql_database_user node['symfony']['mysql_user'] do
+            connection mysql_connection_info
+            password node['symfony']['mysql_pass']
+            database_name node['symfony']['mysql_name']
+            host mysql_remote_host
+            action :grant
+        end
+    end
+end
+
 # create virtual host entry for apache
 web_app node['symfony']['server_name'] do
     template 'web_app.conf.erb'

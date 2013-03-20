@@ -18,7 +18,7 @@ directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
 end
 
 #create shared config dirs
-%w{ shared shared/config shared/uploads shared/media shared/vendor }.each do |createDir|
+%w{ shared shared/config shared/public_files }.each do |createDir|
     directory "/var/www/vhosts/#{node['symfony']['server_name']}/#{createDir}" do
         action :create
         owner node['symfony']['deploy_user']
@@ -28,9 +28,9 @@ end
 end
 
 # setup db connection and other app settings
-template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parameters.ini" do
+template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parameters.yml" do
     action :create
-    source "parameters.ini.erb"
+    source "parameters.yml.erb"
     owner node['symfony']['deploy_user']
     group node['symfony']['deploy_group']
     mode "644"
@@ -56,36 +56,38 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     group deployGroup
 
     # setup configs for before migrate
-    symlink_before_migrate({"config/parameters.ini" => "public/app/config/parameters.ini"})
+    symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
 
-    # setup vendors and ensure install
-    before_migrate do
-        execute "script/deploy/before_migrate.sh" do
-            cwd release_path
-            environment environmentVars
-            user deployUser
-            group deployGroup
-        end
-    end
+    # # setup vendors and ensure install
+    # before_migrate do
+    #     execute "script/deploy/before_migrate.sh" do
+    #         cwd release_path
+    #         environment environmentVars
+    #         user deployUser
+    #         group deployGroup
+    #     end
+    # end
 
     # runs after before_migrate
-    purge_before_symlink %w{ public/web/uploads  public/web/media }
-    create_dirs_before_symlink %w{}
-    symlinks({"uploads" => "public/web/uploads",
-              "media"   => "public/web/media"})
+    purge_before_symlink(["public/web/files"])
+    create_dirs_before_symlink([])
+    symlinks({"public_files" => "public/web/files"})
 
     # runs after symlinks are created
     migrate true
     environment environmentVars
-    migration_command "script/deploy/migration.sh"
+    # migration_command "script/deploy/migration.sh"
+    migration_command "ant deploy"
 
-    # runs after migration
-    before_restart do
-        execute "script/deploy/before_restart.sh" do
-            cwd release_path
-            environment environmentVars
-            user deployUser
-            group deployGroup
-        end
-    end
+    # # runs after migration
+    # before_restart do
+    #     execute "script/deploy/before_restart.sh" do
+    #         cwd release_path
+    #         environment environmentVars
+    #         user deployUser
+    #         group deployGroup
+    #         notifies :restart, "service[apache]"
+    #     end
+    # end
 end
+

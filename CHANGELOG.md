@@ -1,3 +1,10 @@
+1.2.0
+=====
+
+- Added dependency for ant/java for builds
+- Added use of database_user resource to create database in setups with non-root user access
+- Added attrib to be able to define the data_bag that contains the deploy key for the symfony app
+
 1.1.0
 =====
 

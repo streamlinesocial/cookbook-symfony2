@@ -7,6 +7,10 @@ version           "1.2.0"
 recipe            "symfony2", "Setup the webserver components and the required yum packages."
 recipe            "symfony2::deploy_symfony", "Installs the Symfony2 app"
 
+depends "ant"
+depends "composer"
+depends "database"
+
 %w{ centos }.each do |os|
   supports os
 end
