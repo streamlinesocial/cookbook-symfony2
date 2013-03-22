@@ -24,19 +24,19 @@ mysql_connection_info = {
 }
 
 # create database for the environment
-database node['symfony']['mysql_name'] do
+database default['symfony']['parameters']['database_name'] do
     provider Chef::Provider::Database::Mysql
     connection mysql_connection_info
     action :create
 end
 
 # only create the database user if it's not the root user
-unless node['symfony']['mysql_user'] == 'root'
+unless default['symfony']['parameters']['database_user'] == 'root'
     %w{ localhost 127.0.0.1 }.each do |mysql_remote_host|
-        mysql_database_user node['symfony']['mysql_user'] do
+        mysql_database_user default['symfony']['parameters']['database_user'] do
             connection mysql_connection_info
-            password node['symfony']['mysql_pass']
-            database_name node['symfony']['mysql_name']
+            password default['symfony']['parameters']['database_password']
+            database_name default['symfony']['parameters']['database_name']
             host mysql_remote_host
             action :grant
         end
