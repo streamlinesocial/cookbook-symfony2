@@ -3,10 +3,7 @@ deployGroup = node['symfony']['group']
 deployRepo = node["symfony"]["repository"]
 deployBranch = node["symfony"]["revision"]
 
-environmentVars = ({ 'MYSQL_DB'   => node["symfony"]["mysql_name"],
-                     'MYSQL_USER' => node["symfony"]["mysql_user"],
-                     'MYSQL_PASS' => node["symfony"]["mysql_pass"],
-                     'MYSQL_HOST' => node["symfony"]["mysql_host"] })
+environmentVars = ({})
 
 # ensure our deployment dir exists
 directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
@@ -34,12 +31,7 @@ template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parame
     owner node['symfony']['deploy_user']
     group node['symfony']['deploy_group']
     mode "644"
-    variables(
-        :mysql_user => node['symfony']['mysql_user'],
-        :mysql_pass => node['symfony']['mysql_pass'],
-        :mysql_host => node['symfony']['mysql_host'],
-        :mysql_name => node['symfony']['mysql_name']
-    )
+    variables()
 end
 
 # either deploy_revision or deploy (timestamp)
@@ -58,16 +50,6 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # setup configs for before migrate
     symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
 
-    # # setup vendors and ensure install
-    # before_migrate do
-    #     execute "script/deploy/before_migrate.sh" do
-    #         cwd release_path
-    #         environment environmentVars
-    #         user deployUser
-    #         group deployGroup
-    #     end
-    # end
-
     # runs after before_migrate
     purge_before_symlink(["public/web/files"])
     create_dirs_before_symlink([])
@@ -76,18 +58,7 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # runs after symlinks are created
     migrate true
     environment environmentVars
-    # migration_command "script/deploy/migration.sh"
     migration_command "ant deploy"
-
-    # # runs after migration
-    # before_restart do
-    #     execute "script/deploy/before_restart.sh" do
-    #         cwd release_path
-    #         environment environmentVars
-    #         user deployUser
-    #         group deployGroup
-    #         notifies :restart, "service[apache]"
-    #     end
-    # end
 end
+
 
