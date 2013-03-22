@@ -1,6 +1,7 @@
 1.2.0
 =====
 
+- Added tweaks to params to enable more control over the parameters.yml config file in the attributes
 - Added dependency for ant/java for builds
 - Added use of database_user resource to create database in setups with non-root user access
 - Added attrib to be able to define the data_bag that contains the deploy key for the symfony app
