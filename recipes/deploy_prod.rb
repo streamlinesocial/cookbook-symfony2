@@ -1,8 +1,3 @@
-deployUser = node['symfony']['user']
-deployGroup = node['symfony']['group']
-deployRepo = node["symfony"]["repository"]
-deployBranch = node["symfony"]["revision"]
-
 environmentVars = ({})
 
 # ensure our deployment dir exists
@@ -39,13 +34,13 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
 
     action :deploy # or :rollback or force_deploy
 
-    repository deployRepo
-    revision deployBranch
+    repository node["symfony"]["repository"]
+    revision node["symfony"]["revision"]
     shallow_clone true
     ssh_wrapper "/tmp/private_key/wrap-ssh4git.sh"
 
-    user deployUser
-    group deployGroup
+    user node['symfony']['deploy_user']
+    group node['symfony']['deploy_group']
 
     # setup configs for before migrate
     symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
