@@ -7,6 +7,7 @@ default["symfony"]["packages"] = [ 'wget', 'libjpeg', 'libpng', 'giflib',
 default['symfony']['server_name'] = 'symfony-app.dev'
 default['symfony']['server_aliases'] = ['www.symfony-app.dev']
 default['symfony']['server_docroot'] = "/var/www/vhosts/#{default['symfony']['server_name']}/current/public/web"
+default['symfony']['server_is_canonical'] = true
 
 # used to construct the yml file
 default['symfony']['parameters']['database_driver']     = "pdo_mysql"

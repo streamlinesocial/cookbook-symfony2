@@ -1,3 +1,8 @@
+1.3.0
+=====
+
+- Added ability to turn on/off canonical redirect via node attribs
+
 1.2.0
 =====
 
