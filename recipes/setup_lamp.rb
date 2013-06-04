@@ -50,6 +50,7 @@ web_app node['symfony']['server_name'] do
     docroot node['symfony']['server_docroot']
     server_name node['symfony']['server_name']
     server_aliases node['symfony']['server_aliases']
+    server_is_canonical node['symfony']['server_is_canonical']
     enable true
 end
 
