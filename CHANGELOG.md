@@ -1,3 +1,8 @@
+1.3.1
+=====
+
+- Added symfony rewrite rules into the vhost configs
+
 1.3.0
 =====
 
