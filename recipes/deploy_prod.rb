@@ -53,7 +53,7 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # runs after symlinks are created
     migrate true
     environment environmentVars
-    migration_command "ant deploy"
+    migration_command "ant deploy -logfile '/var/www/vhosts/#{node['symfony']['server_name']}/shared/ant.log'"
 end
 
 
