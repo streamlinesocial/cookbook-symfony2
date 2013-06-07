@@ -1,3 +1,8 @@
+1.4.0
+=====
+
+- Add requirement of memcached
+
 1.3.1
 =====
 

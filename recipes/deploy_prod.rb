@@ -1,3 +1,5 @@
+include_recipe "memcached"
+
 environmentVars = ({})
 
 # ensure our deployment dir exists
