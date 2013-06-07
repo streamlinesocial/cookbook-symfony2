@@ -1,6 +1,8 @@
 1.3.1
 =====
 
+- Added restart apache call after deploy
+- Added place to configure sessions to be stored and shared between app deploys
 - Added symfony rewrite rules into the vhost configs
 
 1.3.0

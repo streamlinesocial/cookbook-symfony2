@@ -10,7 +10,7 @@ directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
 end
 
 #create shared config dirs
-%w{ shared shared/config shared/public_files }.each do |createDir|
+%w{ shared shared/config shared/public_files shared/sessions }.each do |createDir|
     directory "/var/www/vhosts/#{node['symfony']['server_name']}/#{createDir}" do
         action :create
         owner node['symfony']['deploy_user']
@@ -46,14 +46,20 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
 
     # runs after before_migrate
-    purge_before_symlink(["public/web/files"])
+    purge_before_symlink(["public/web/files", "public/app/sessions"])
     create_dirs_before_symlink([])
-    symlinks({"public_files" => "public/web/files"})
+    symlinks({
+        "public_files" => "public/web/files",
+        "sessions" => "public/app/sessions",
+    })
 
     # runs after symlinks are created
     migrate true
     environment environmentVars
     migration_command "ant deploy -logfile '/var/www/vhosts/#{node['symfony']['server_name']}/shared/ant.log'"
+
+    # restart the apache server (to clear apc or other cache)
+    notifies :restart, "service[apache2]", :immediately
 end
 
 
