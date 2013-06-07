@@ -12,7 +12,7 @@ directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
 end
 
 #create shared config dirs
-%w{ shared shared/config shared/public_files shared/sessions }.each do |createDir|
+%w{ shared shared/config shared/public_files shared/public_uploads shared/sessions }.each do |createDir|
     directory "/var/www/vhosts/#{node['symfony']['server_name']}/#{createDir}" do
         action :create
         owner node['symfony']['deploy_user']
@@ -48,10 +48,11 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
 
     # runs after before_migrate
-    purge_before_symlink(["public/web/files", "public/app/sessions"])
+    purge_before_symlink(["public/web/files", "public/web/uploads", "public/app/sessions"])
     create_dirs_before_symlink([])
     symlinks({
         "public_files" => "public/web/files",
+        "public_uploads" => "public/web/uploads",
         "sessions" => "public/app/sessions",
     })
 
