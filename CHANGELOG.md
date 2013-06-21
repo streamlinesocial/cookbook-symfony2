@@ -1,3 +1,8 @@
+1.4.2
+=====
+
+- Add env var to the recipe for composer to set the cache dir, make it live in the shared dir for permissions reasons
+
 1.4.1
 =====
 

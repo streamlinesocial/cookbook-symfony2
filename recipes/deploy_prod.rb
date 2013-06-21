@@ -10,7 +10,9 @@ include_recipe "apache2"
 #     action [ :enable, :start ]
 # end
 
-environmentVars = ({})
+environmentVars = ({
+    "COMPOSER_HOME" => "/var/www/vhosts/#{node['symfony']['server_name']}/shared/.composer"
+})
 
 # ensure our deployment dir exists
 directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
