@@ -1,7 +1,13 @@
+1.4.1
+=====
+
+- Add deps for other recipes needed in the prod deploy recipe
+
 1.4.0
 =====
 
 - Add requirement of memcached
+- Start / Enable memcached service in prod
 
 1.3.1
 =====

@@ -1,4 +1,14 @@
-include_recipe "memcached"
+# include_recipe "mysql::server"
+# include_recipe "memcached"
+include_recipe "apache2"
+#
+# service "memcached" do
+#     action [ :enable, :start ]
+# end
+#
+# service "mysql" do
+#     action [ :enable, :start ]
+# end
 
 environmentVars = ({})
 
