@@ -1,3 +1,8 @@
+1.4.3
+=====
+
+- Update log location for the ant runs to be stored in /var/log/ant/date.log format, so we dont overwrite past logs.
+
 1.4.2
 =====
 

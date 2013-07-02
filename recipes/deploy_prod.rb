@@ -43,6 +43,12 @@ template "/var/www/vhosts/#{node['symfony']['server_name']}/shared/config/parame
     variables()
 end
 
+directory "/var/log/ant" do
+    action :create
+    recursive true
+    mode 0777
+end
+
 # either deploy_revision or deploy (timestamp)
 deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
 
@@ -71,7 +77,7 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # runs after symlinks are created
     migrate true
     environment environmentVars
-    migration_command "ant deploy -logfile '/var/www/vhosts/#{node['symfony']['server_name']}/shared/ant.log'"
+    migration_command "ant deploy -logfile '/var/log/ant/#{node['symfony']['server_name']}-$(date +%Y%m%d-%H%M%S).log'"
 
     # restart the apache server (to clear apc or other cache)
     notifies :restart, "service[apache2]", :immediately
