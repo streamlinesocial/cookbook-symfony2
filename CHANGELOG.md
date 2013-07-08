@@ -1,3 +1,8 @@
+1.5.0
+=====
+
+- Remove memcached requirement at the cookbook level, should be recommends at most.
+
 1.4.3
 =====
 
