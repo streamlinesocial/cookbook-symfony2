@@ -29,3 +29,18 @@ default["symfony"]["revision"] = 'master'
 default["symfony"]["deploy_user"] = 'apache'
 default["symfony"]["deploy_group"] = 'apache'
 default["symfony"]["deploy_key_bag_item"] = 'symfony-app'
+
+# 200 mb max for a 2GB server
+# 16mb = 16777216/2000 = 8388.608 users logged in before they get logged out by memcache
+default["symfony"]["memcache_pools"] = {
+    "sessions" => {
+        "name" => "sessions",
+        "port" => 11211,
+        "memory" => 16
+    },
+    "doctrine" => {
+        "name" => "doctrine",
+        "port" => 11212,
+        "memory" => 184
+    }
+}

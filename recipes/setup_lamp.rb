@@ -87,3 +87,11 @@ if node['apache']['listen_ports'].include?("443")
         backup false
     end
 end
+
+# setup memcache
+node['symfony']['memcache_pools'].each do |key,values|
+    memcache_instance values['name'] do
+        port values['port']
+        memory values['memory']
+    end
+end
