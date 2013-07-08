@@ -90,7 +90,7 @@ end
 
 # setup memcache
 node['symfony']['memcache_pools'].each do |key,values|
-    memcache_instance values['name'] do
+    memcached_instance values['name'] do
         port values['port']
         memory values['memory']
     end
