@@ -2,6 +2,7 @@
 =====
 
 - Remove memcached requirement at the cookbook level, should be recommends at most.
+- Add telnet to default package installed, for debugging mainly.
 
 1.4.3
 =====
