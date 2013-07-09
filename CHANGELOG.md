@@ -1,3 +1,8 @@
+1.6.0
+=====
+
+- Added new cron recipe to configure cron jobs via attribs
+
 1.5.0
 =====
 

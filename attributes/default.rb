@@ -41,3 +41,16 @@ default["symfony"]["memcache_pools"] = {
         "memory" => 184
     }
 }
+
+# example format commented out
+default["symfony"]["crons"] = {
+    # 'cron_key' = {
+    #     'minute'  => '*',
+    #     'hour'    => '*',
+    #     'day'     => '*',
+    #     'month'   => '*',
+    #     'weekday' => '*',
+    #     'action'  => 'create',
+    #     'command' => 'cd /var/somewhere && ./app/console do:something'
+    # }
+}
