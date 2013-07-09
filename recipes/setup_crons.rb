@@ -3,6 +3,7 @@ node['symfony']['crons'].each do |key,values|
 
     # set defaults so we don't break the loop
     defaults = {
+        'user'    => node['symfony']['deploy_user'],
         'minute'  => '*',
         'hour'    => '*',
         'day'     => '*',
@@ -18,6 +19,7 @@ node['symfony']['crons'].each do |key,values|
 
     # use key as a suffix for the cron name
     cron "symfony_#{key}" do
+        user        values['user']
         minute      values['minute']
         hour        values['hour']
         day         values['day']

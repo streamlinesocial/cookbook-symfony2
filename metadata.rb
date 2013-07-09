@@ -7,6 +7,7 @@ version           "1.6.0"
 recipe            "symfony2", "Setup the webserver components and the required yum packages."
 recipe            "symfony2::deploy_prod", "Installs the Symfony2 app in ideal production env"
 recipe            "symfony2::deploy_vagrant", "Installs the Symfony2 app in ideal vagrant environemnt for dev"
+recipe            "symfony2::setup_crons", "Configures cron jobs for the app"
 recipe            "symfony2::setup_deploy", "Configures the deploy key"
 recipe            "symfony2::setup_lamp", "Configures the databases and other settings pre-deploy"
 
