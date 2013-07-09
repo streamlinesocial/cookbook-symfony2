@@ -34,7 +34,7 @@ node['symfony']['crons'].each do |key,values|
         command     values['command']
 
         # define the create or delete
-        case value['action']
+        case values['action']
         when 'delete'
             action :delete
         else
