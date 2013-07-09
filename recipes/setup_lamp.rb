@@ -1,4 +1,5 @@
 include_recipe "database::mysql"
+include_recipe "memcached::config"
 
 node['symfony']['packages'].each do |pkg|
   package pkg do
