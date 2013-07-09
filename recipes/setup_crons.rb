@@ -17,6 +17,12 @@ node['symfony']['crons'].each do |key,values|
     # merge values overwriting defaults
     values = defaults.merge(values)
 
+    # alter the command to be rooted in the apps deploy directory
+    values['command'] = %Q{
+        cd /var/www/vhosts/#{node['symfony']['server_name']}/current
+        #{values['command']}
+    }
+
     # use key as a suffix for the cron name
     cron "symfony_#{key}" do
         user        values['user']
