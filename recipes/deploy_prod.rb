@@ -66,12 +66,13 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
 
     # runs after before_migrate
-    purge_before_symlink(["public/web/files", "public/web/uploads", "public/app/sessions"])
+    purge_before_symlink(["public/web/files", "public/web/uploads", "public/app/sessions", "public/vendor"])
     create_dirs_before_symlink([])
     symlinks({
         "public_files" => "public/web/files",
         "public_uploads" => "public/web/uploads",
         "sessions" => "public/app/sessions",
+        "vendor" => "public/vendor"
     })
 
     # runs after symlinks are created

@@ -1,3 +1,8 @@
+1.8.0
+=====
+
+- symlink the vendor dir to reduce deploy times
+
 1.7.0
 =====
 
