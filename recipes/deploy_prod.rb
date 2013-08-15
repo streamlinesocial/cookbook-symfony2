@@ -82,5 +82,3 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     # restart the apache server (to clear apc or other cache)
     notifies :restart, "service[apache2]", :immediately
 end
-
-

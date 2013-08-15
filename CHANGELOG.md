@@ -1,3 +1,8 @@
+1.7.0
+=====
+
+- patch parameters.yml.erb to be able to support a few nested levels of objects in the yml format
+
 1.6.0
 =====
 
