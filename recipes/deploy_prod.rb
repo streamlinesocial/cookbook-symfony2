@@ -15,21 +15,25 @@ environmentVars = ({
 })
 
 # ensure our deployment dir exists
+directory "/var/www/vhosts" do
+    action :create
+    mode "0775"
+end
+
+# ensure our deployment dir exists
 directory "/var/www/vhosts/#{node['symfony']['server_name']}" do
     action :create
     mode "0775"
-    recursive true
     owner node['symfony']['deploy_user']
     group node['symfony']['deploy_group']
 end
 
 #create shared config dirs
-%w{ shared shared/config shared/public_files shared/public_uploads shared/sessions }.each do |createDir|
+%w{ shared shared/config shared/public_files shared/public_uploads shared/sessions shared/vendor }.each do |createDir|
     directory "/var/www/vhosts/#{node['symfony']['server_name']}/#{createDir}" do
         action :create
         owner node['symfony']['deploy_user']
         group node['symfony']['deploy_group']
-        recursive true
     end
 end
 
@@ -63,7 +67,10 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
     group node['symfony']['deploy_group']
 
     # setup configs for before migrate
-    symlink_before_migrate({"config/parameters.yml" => "public/app/config/parameters.yml"})
+    symlink_before_migrate({
+        "config/parameters.yml" => "public/app/config/parameters.yml",
+        "vendor" => "public/vendor"
+    })
 
     # runs after before_migrate
     purge_before_symlink(["public/web/files", "public/web/uploads", "public/app/sessions", "public/vendor"])
@@ -72,7 +79,6 @@ deploy_revision "/var/www/vhosts/#{node['symfony']['server_name']}" do
         "public_files" => "public/web/files",
         "public_uploads" => "public/web/uploads",
         "sessions" => "public/app/sessions",
-        "vendor" => "public/vendor"
     })
 
     # runs after symlinks are created

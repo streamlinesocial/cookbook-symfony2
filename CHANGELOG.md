@@ -1,3 +1,8 @@
+1.9.0
+=====
+
+- add deploy_capistrano to act as a base for what needs to be setup for capistrano based deploys
+
 1.8.0
 =====
 
