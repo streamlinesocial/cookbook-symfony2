@@ -1,3 +1,8 @@
+1.10.0
+======
+
+- revert 1.8.0 changes, we will assume that vendors are committed to the repo (a pull based setup via chef has proven undependable to pull vendors in an automated fashion)
+
 1.9.0
 =====
 
